@@ -4,13 +4,13 @@
 public class MyLinkedList
 {
 	// Atributes
-	Node firstnode;
+	private Node firstnode;
 
 	// Methods from Lecture 1
-	public static void initializeHead(int freq)
+	public void initializeHead(int freq)
 	{
 		Node newhead = new Node(freq);
-		newhead.nextNode = newhead;			// Points to itself
+		newhead.setNextNode(newhead);			// Points to itself
 	}
 	public boolean CheckIfEmpty( )
 	{
@@ -19,89 +19,88 @@ public class MyLinkedList
 			empty = true;
 		return empty;
 	}
-	public static void addNodeAfter(Node prevNode, Node tobeadded)
+	public void addNodeAfter(Node prevNode, Node tobeadded)
 	{
-			tobeadded.nextNode = null;
-			prevNode.nextNode = tobeadded;
+			tobeadded.setNextNode(null);
+			prevNode.setNextNode(tobeadded);
 	}
-	public static void addNodeAtHead(MyLinkedList myLinkedList, Node tobeadded)
+	public void addNodeAtHead(Node tobeadded)
 	{
-		tobeadded.nextNode = myLinkedList.firstnode;
-		myLinkedList.firstnode = tobeadded ;
+		tobeadded.setNextNode(this.firstnode);
+		this.firstnode = tobeadded ;
 	}
-	public static void removeTwoFirstNodes(MyLinkedList myLinkedList)
+	public void removeTwoFirstNodes()
 	{
-		myLinkedList.firstnode = myLinkedList.firstnode.nextNode.nextNode;
+		this.firstnode = this.firstnode.getNextNode().getNextNode();
 	}
-	public static void showMyLinkedList(MyLinkedList linkedList)
+	public void showMyLinkedList()
 	{
-		Node currentNode = linkedList.firstnode;
+		Node currentNode = this.firstnode;
 		while(currentNode != null)
 		{
-			System.out.println(String.format("%s", currentNode.frequency));
-			currentNode = currentNode.nextNode;			
+			System.out.println(String.format("%s", currentNode.getFrequency()));
+			currentNode = currentNode.getNextNode();			
 		}		
 	}
 	
 	// Methods implemented by myself
-	public static MyLinkedList bubleSort(MyLinkedList myLinkedList)
+	public MyLinkedList bubleSort()
     {
 		// Following intructions from the slides of Lecture 2
     	boolean sorted = false;
     	do
     	{
     		sorted = true;
-    		Node currentNode = myLinkedList.firstnode;
-    		while(currentNode.nextNode != null)
+    		Node currentNode = this.firstnode;
+    		while(currentNode.getNextNode() != null)
     		{
-				if(currentNode.frequency > currentNode.nextNode.frequency)
+				if(currentNode.getFrequency() > currentNode.getNextNode().getFrequency())
 				{
 					sorted = false;
 					// Frequency (int), r&l-Child Nodes of currentNode are saved
-					int aux = currentNode.frequency;
-					Node auxRight = currentNode.rightChild;
-					Node auxLeft = currentNode.leftChild;
+					int aux = currentNode.getFrequency();
+					Node auxRight = currentNode.getRightChild();
+					Node auxLeft = currentNode.getLeftChild();
 					
 					// Data from the next node is passed to the current node
-					currentNode.frequency = currentNode.nextNode.frequency;
-					currentNode.rightChild = currentNode.nextNode.rightChild;
-					currentNode.leftChild = currentNode.nextNode.leftChild;
+					currentNode.setFrequency(currentNode.getNextNode().getFrequency());
+					currentNode.setRightChild(currentNode.getNextNode().getRightChild());
+					currentNode.setLeftChild(currentNode.getNextNode().getLeftChild());
 					
 					// Next node is refill with the saved data
-					currentNode.nextNode.frequency = aux;
-					currentNode.nextNode.rightChild = auxRight;
-					currentNode.nextNode.leftChild = auxLeft;
-					
+					currentNode.getNextNode().setFrequency(aux);
+					currentNode.getNextNode().setRightChild(auxRight);
+					currentNode.getNextNode().setLeftChild(auxLeft);					
 				}
-				currentNode = currentNode.nextNode;
+				currentNode = currentNode.getNextNode();
 			}
     	}while(sorted == false);
-    	return myLinkedList;
+    	return this;
     }
-	public static MyLinkedList buildTree(MyLinkedList myLinkedList)
+	public MyLinkedList buildTree()
 	{
 		// Binary Tree is created consisting in 2 childs, right & left,
 		// and a head (or root) of both of them.
 		
-		int minor = myLinkedList.firstnode.frequency;				// LList sorted, so firstNode is the smallest
-		int bigger = myLinkedList.firstnode.nextNode.frequency;
-		Node headNode = new Node(minor + bigger);					// Root is the sum o the first two members
-		Node restNode = myLinkedList.firstnode.nextNode.nextNode;	// I save this node bcause I delete the two in the front
+		int minor = this.firstnode.getFrequency();				// LList sorted, so firstNode is the smallest
+		int bigger = this.firstnode.getNextNode().getFrequency();
+		Node headNode = new Node(minor + bigger);			// Root is the sum o the first two members
+		Node restNode = this.firstnode.getNextNode().getNextNode();	// I save this node bcause I delete the two in the front
 		
-		headNode.rightChild = myLinkedList.firstnode;				// Smallest freq		
-		headNode.leftChild = myLinkedList.firstnode.nextNode;		// Second smallest
+		headNode.setRightChild(this.firstnode);				// Smallest freq		
+		headNode.setLeftChild(this.firstnode.getNextNode());		// Second smallest
 		
-		headNode.rightChild.nextNode = null;
-		headNode.leftChild.nextNode = null;							// Not needed anymore
+		headNode.getRightChild().setNextNode(null);
+		headNode.getLeftChild().setNextNode(null);				// Not needed anymore
 		
-		addNodeAtHead(myLinkedList, headNode);						// headNode of r&l-childs (BTree), added to the LList
-		headNode.nextNode = restNode;								// My Llist have again all members except for 2smallest
-		myLinkedList = MyLinkedList.bubleSort(myLinkedList);		// LinkedList members sorted
-		return myLinkedList;
+		this.addNodeAtHead(headNode);						// headNode of r&l-childs (BTree), added to the LList
+		headNode.setNextNode(restNode);						// My Llist have again all members except for 2smallest
+		
+		return this.bubleSort();							// LinkedList members sorted
 	}
-	public static String CodeLetter(MyLinkedList myLinkedList, int freq)
+	public String CodeLetter(int freq)
 	{
-		MyLinkedList bTree = myLinkedList;
+		MyLinkedList bTree = this;
 		String code = "";
 		Node currentNode = bTree.firstnode;		// Root of Binary Tree
 		do {
@@ -111,30 +110,30 @@ public class MyLinkedList
 			// 3. previousNode is created to be able to go up in the Binary Tree
 			// 4. If the reached leaf is not the objective, it is deleted.
 			// 5. If the only Node alive is firstNode, there is no such a frequency
-			while(currentNode.rightChild != null || currentNode.leftChild != null)
+			while(currentNode.getRightChild() != null || currentNode.getLeftChild() != null)
 			{
-				if(currentNode.rightChild != null)	
+				if(currentNode.getRightChild() != null)	
 				{
 					right = true;
-					currentNode.rightChild.previousNode = currentNode;
-					currentNode = currentNode.rightChild;
+					currentNode.getRightChild().setPreviousNode(currentNode);
+					currentNode = currentNode.getRightChild();
 					code += "1 ";	
 					// System.out.println(code);	// To see the way of the search
 				}
 				else
 				{
 					right = false;
-					currentNode.leftChild.previousNode = currentNode;
-					currentNode = currentNode.leftChild;
+					currentNode.getLeftChild().setPreviousNode(currentNode);
+					currentNode = currentNode.getLeftChild();
 					code += "0 ";	
 					// System.out.println("0 ");
 				}
 			}
-			if(currentNode.frequency == freq)
+			if(currentNode.getFrequency() == freq)
 			{
 				return code;
 			}
-			else if(currentNode == myLinkedList.firstnode)
+			else if(currentNode == this.firstnode)
 			{
 				return "There is not such a frequency";	
 			}
@@ -142,14 +141,14 @@ public class MyLinkedList
 			{
 				if(right)
 				{
-					currentNode = currentNode.previousNode;
-					currentNode.rightChild = null;
+					currentNode = currentNode.getPreviousNode();
+					currentNode.setRightChild(null);
 					code = code.substring(0, code.length()-2);
 				}
 				else
 				{
-					currentNode = currentNode.previousNode;
-					currentNode.leftChild = null;
+					currentNode = currentNode.getPreviousNode();
+					currentNode.setLeftChild(null);
 					code = code.substring(0, code.length()-2);
 				}
 			}
@@ -157,18 +156,23 @@ public class MyLinkedList
 		
 		return "There is not such a frequency";		
 	}
-
+	
+	
+	public Node getFirstnode() {
+		return firstnode;
+	}
+	public void setFirstnode(Node firstnode) {
+		this.firstnode = firstnode;
+	}
+	
 	// Constructor
 	public MyLinkedList(Node newhead)
 	{
 		//initialize LinkedList anew
-		newhead.nextNode = newhead;	
+		// newhead.nextNode = newhead;	
 		firstnode = newhead;
 	}
-	
-	// Constructor
 	public MyLinkedList()
 	{
-
 	}
 }

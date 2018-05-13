@@ -4,12 +4,44 @@
 public class Node
 {
 	// Atributes
-	public int frequency;
-	public Node leftChild;
-	public Node rightChild;
-	public Node nextNode;
-	public Node previousNode;
+	private int frequency;
+	private Node leftChild;
+	private Node rightChild;
+	private Node nextNode;
+	private Node previousNode;
 	
+	// Get and Set Methods
+	public int getFrequency() {
+		return frequency;
+	}
+	public void setFrequency(int frequency) {
+		this.frequency = frequency;
+	}
+	public Node getLeftChild() {
+		return leftChild;
+	}
+	public void setLeftChild(Node leftChild) {
+		this.leftChild = leftChild;
+	}
+	public Node getRightChild() {
+		return rightChild;
+	}
+	public void setRightChild(Node rightChild) {
+		this.rightChild = rightChild;
+	}
+	public Node getNextNode() {
+		return nextNode;
+	}
+	public void setNextNode(Node nextNode) {
+		this.nextNode = nextNode;
+	}
+	public Node getPreviousNode() {
+		return previousNode;
+	}
+	public void setPreviousNode(Node previousNode) {
+		this.previousNode = previousNode;
+	}
+
 	// Constructor
 	public Node(int frequency)
 	{
@@ -17,34 +49,4 @@ public class Node
 		this.leftChild = null;
 		this.rightChild = null;
 	}
-	
-    // Methods (not used anymore)
-    public static void showNodes(Node[] node)
-    {
-    	for (int i = 0; i < node.length; i++) 
-    	{
-    		System.out.println(String.format("%5d", node[i].frequency));
-		}
-    	System.out.println();
-    }
-    public static Node[] bubleSort(Node[] input)
-    {
-    	boolean sorted = false;
-    	do
-    	{
-    		sorted = true;
-    		for (int i = 0; i < input.length-1; i++) 
-    		{
-				if(input[i].frequency > input[i+1].frequency)
-				{
-					sorted = false;
-					Node aux = input[i];
-					input[i] = input[i+1];
-					input[i+1] = aux;
-				}
-			}
-    	}while(sorted == false);
-    	return input;
-    }
-
 }
