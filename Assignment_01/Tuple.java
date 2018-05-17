@@ -6,7 +6,7 @@ public class Tuple
     public int frequency;
 
 
-//Constructor
+    //Constructor
     public Tuple(String letter, int frequency)
     {
         this.letter = letter;

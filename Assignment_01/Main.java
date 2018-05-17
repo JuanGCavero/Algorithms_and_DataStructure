@@ -3,16 +3,15 @@
 // Class Main
 public class Main 
 {
-	// Objects
-	
-	
+	// Objects	
 	
     public static void main(String[] args)
     {
     	
         // ******* Input *******
-        Tuple[] pairs = {new Tuple("a",14), new Tuple("b",20), new Tuple("c",7), new Tuple("d",10), new Tuple("e",23),
-        				 new Tuple("f",5), new Tuple("g",16), new Tuple("h",3)};
+        Tuple[] pairs = {	new Tuple("a",14), new Tuple("b",20), new Tuple("c",7),
+        					new Tuple("d",10), new Tuple("e",23), new Tuple("f",5),
+        					new Tuple("g",16), new Tuple("h",3)};
         
         // ******* Actions *******
         // Pairs are converted into Nodes 
@@ -29,7 +28,7 @@ public class Main
         	myLinkedList.addNodeAtHead(input[j]);
 		}
         
-        // LList is ordered
+        // myLinkedList is ordered
         myLinkedList = myLinkedList.bubleSort();
         
         // ******* Build Binary Tree ********
@@ -40,21 +39,21 @@ public class Main
             // System.out.println();        	
         }
 		
-        MyLinkedList copyLL = myLinkedList;
-        
-        String code = myLinkedList.CodeLetter(pairs[7].frequency);
-        System.out.println(String.format("%s - %s", pairs[7].letter, code));
-        
-        String code2 = copyLL.CodeLetter(pairs[2].frequency);
-        System.out.println(String.format("%s - %s", pairs[2].letter, code2));
-         
-        // _______ Coding our letters ________
-//        for (int i = 0; i < input.length; i++) {
-//            String code3 = MyLinkedList.CodeLetter(myLinkedList, pairs[i].frequency);
-//            System.out.println(String.format("%s - %s", pairs[i].letter, code3));
-//            myLinkedList = copyLL;
-//		}
-       
-        
-    }    
+        // ******* Coding our letters *******
+        for (int i = 0; i < input.length; i++) {
+            String code = myLinkedList.CodeMyLetter(pairs[i].frequency, myLinkedList.getFirstnode(), "" );
+            System.out.println(String.format("%s -%s", pairs[i].letter, invertString(code)));
+		}
+               
+    }
+    
+    public static String invertString(String str)
+    {
+    	String inv = "";
+    	for (int i = 0; i < str.length(); i++) {
+			inv += str.substring(str.length()-i-1, str.length()-i);
+		}
+    	return inv;
+    }
+
 }

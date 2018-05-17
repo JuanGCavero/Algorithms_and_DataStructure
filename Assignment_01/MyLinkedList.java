@@ -6,7 +6,7 @@ public class MyLinkedList
 	// Atributes
 	private Node firstnode;
 
-	// Methods from Lecture 1
+// Methods from Lecture 1
 	public void initializeHead(int freq)
 	{
 		Node newhead = new Node(freq);
@@ -43,7 +43,7 @@ public class MyLinkedList
 		}		
 	}
 	
-	// Methods implemented by myself
+// Methods implemented by myself
 	public MyLinkedList bubleSort()
     {
 		// Following intructions from the slides of Lecture 2
@@ -98,6 +98,8 @@ public class MyLinkedList
 		
 		return this.bubleSort();							// LinkedList members sorted
 	}
+	
+	// First attempt of BinarySearch (works, but the tree ends dead after the seeking of a letter)
 	public String CodeLetter(int freq)
 	{
 		MyLinkedList bTree = this;
@@ -152,27 +154,79 @@ public class MyLinkedList
 					code = code.substring(0, code.length()-2);
 				}
 			}
-		} while(bTree.firstnode != null);
+		} while(bTree.firstnode != null);	
 		
 		return "There is not such a frequency";		
 	}
 	
+    // Second attempt
+	// Recursive method to code the letters
+	// 1. If the current node has the freq we are looking for:
+	// retrieve all branches untill the root (disting between R and L)
+	// 2. If the current node does not match the freq:
+	// 2.1. go deeper if possible (to R and L childs) and call 1.
+	// 2.2. If already found, add subCode
+	public String CodeMyLetter(int freq, Node current, String subCode)
+	{
+		// To store our subCodes:
+		String rightResult = "";
+		String leftResult = "";
+		
+		// If the current node node match the freq we are looking for,
+		// we check if it is a left or right child.
+		// This if can be only activate at leafs
+		if(current.getFrequency() == freq)
+		{
+			if(current.getPreviousNode() == current.getRightChild())
+			{
+				return subCode; // "1 "
+			}
+			else if(current.getPreviousNode() == current.getLeftChild())
+			{
+				return subCode; // "0 "
+			}			
+		}
+		else
+		{
+			if(current.getRightChild() != null)
+			{				
+				rightResult = CodeMyLetter(freq, current.getRightChild(), "1 ");
+				
+				// We already found out the leaf:
+				if(! rightResult.equals(""))
+				{
+					return rightResult + subCode;
+				}
+			}
+			if(current.getLeftChild() != null)
+			{
+				leftResult = CodeMyLetter(freq, current.getLeftChild(), "0 ");
+				
+				// We already found out the leaf:
+				if(! leftResult.equals(""))
+				{
+					return leftResult + subCode;
+				}
+			}
+		}
+		return "";
+	}
 	
+// Get and Set Methods
 	public Node getFirstnode() {
 		return firstnode;
 	}
 	public void setFirstnode(Node firstnode) {
 		this.firstnode = firstnode;
 	}
-	
-	// Constructor
+
+// Constructor
 	public MyLinkedList(Node newhead)
 	{
 		//initialize LinkedList anew
 		// newhead.nextNode = newhead;	
 		firstnode = newhead;
 	}
-	public MyLinkedList()
-	{
-	}
+	
 }
+

@@ -10,7 +10,7 @@ public class Node
 	private Node nextNode;
 	private Node previousNode;
 	
-	// Get and Set Methods
+// Get and Set Methods
 	public int getFrequency() {
 		return frequency;
 	}
@@ -42,7 +42,7 @@ public class Node
 		this.previousNode = previousNode;
 	}
 
-	// Constructor
+// Constructor
 	public Node(int frequency)
 	{
 		this.frequency = frequency;
